@@ -2,8 +2,6 @@
 #include <algorithm>
 #include <initializer_list>
 
-namespace ds {
-
 struct out_of_range {};
 
 template <typename T> class Vector {
@@ -357,5 +355,3 @@ template <class T> inline T *Vector<T>::data() noexcept { return _array; }
 template <class T> inline const T *Vector<T>::data() const noexcept {
   return _array;
 }
-
-} // namespace ds
