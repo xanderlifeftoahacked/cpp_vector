@@ -1,5 +1,3 @@
-
-#pragma GCC optimize("O3")
 #pragma once
 #include <algorithm>
 #include <initializer_list>
