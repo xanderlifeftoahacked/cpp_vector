@@ -1,5 +1,4 @@
 #pragma once
-#include <algorithm>
 #include <initializer_list>
 
 struct out_of_range {};
@@ -99,7 +98,7 @@ inline Vector<T>::Vector() noexcept : _array{nullptr}, _size{0}, _space{0} {};
 template <typename T>
 inline Vector<T>::Vector(std::size_t size) noexcept
     : _array{new T[size]}, _size{size}, _space{size} {
-  for (int i = 0; i < size; i++) {
+  for (std::size_t i = 0; i < size; i++) {
     _array[i] = T();
   }
 }
@@ -270,7 +269,9 @@ inline void Vector<T>::push_front(const T &value) noexcept {
   _size++;
 
   T temp[_space];
-  std::copy(_array, _array + _space, temp);
+  for (std::size_t i = 0; i < _space; i++) {
+    temp[i] = _array[i];
+  }
   _array[0] = value;
   for (std::size_t i = 1; i < _size; i++) {
     _array[i] = temp[i - 1];
@@ -280,7 +281,9 @@ inline void Vector<T>::push_front(const T &value) noexcept {
 template <typename T> inline void Vector<T>::pop_front() noexcept {
   if (_size > 0) {
     T temp[_space];
-    std::copy(_array, _array + _space, temp);
+    for (std::size_t i = 0; i < _space; i++) {
+      temp[i] = _array[i];
+    }
     for (std::size_t i = 1; i < _size; i++) {
       _array[i - 1] = temp[i];
     }
@@ -292,28 +295,11 @@ template <typename T> inline void Vector<T>::pop_front() noexcept {
 
 // TODO
 template <typename T>
-inline void Vector<T>::insert(std::size_t index, const T &value) noexcept {
-  if (index < _size) {
-    _size++;
-    T temp[_space];
-    std::copy(_array, _array + _space, temp);
-    for (std::size_t i = index + 1; i < _size; i++) {
-      _array[i] = temp[i - 1];
-    }
-  }
-}
+inline void Vector<T>::insert(std::size_t index, const T &value) noexcept {}
+
+// TODO
 template <typename T>
-inline void Vector<T>::remove(std::size_t index) noexcept {
-  if (index < _size) {
-    _size--;
-    T temp[_space];
-    memcpy(temp, _array, _space * sizeof(T));
-    std::copy(_array, _array + _space, temp);
-    for (std::size_t i = index; i < _size; i++) {
-      _array[i] = temp[i + 1];
-    }
-  }
-}
+inline void Vector<T>::remove(std::size_t index) noexcept {}
 
 template <class T> inline T &Vector<T>::at(std::size_t index) {
   if (index < 0 || _size <= index)
